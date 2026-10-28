@@ -1,0 +1,90 @@
+{% extends "posts/base.html" %}
+
+{% block title %}Inicio | Sillage{% endblock %}
+
+{% block content %}
+
+<section class="text-center mb-5">
+
+    <h1 class="display-4 fw-bold gold-text">
+        Descubrí el mundo de las fragancias
+    </h1>
+
+    <p class="lead text-secondary mt-3">
+        Reseñas, experiencias y opiniones sobre perfumes.
+    </p>
+
+</section>
+
+<h2 class="mb-4">Últimas publicaciones</h2>
+
+<div class="row g-4">
+
+    {% for post in posts %}
+
+    <div class="col-md-6 col-lg-4">
+
+        <div class="post-card h-100 d-flex flex-column">
+
+            {% if post.imagen %}
+
+                <img
+                    src="{{ post.imagen.url }}"
+                    class="post-image"
+                    alt="{{ post.titulo }}"
+                >
+
+            {% else %}
+
+                <div class="post-placeholder">
+                    Sin imagen disponible
+                </div>
+
+            {% endif %}
+
+            <div class="p-4 d-flex flex-column flex-grow-1">
+
+                <span class="gold-text mb-2">
+                    {{ post.get_categoria_display }}
+                </span>
+
+                <h3 class="h5 fw-bold">
+                    {{ post.titulo }}
+                </h3>
+
+                <p class="text-secondary">
+                    {{ post.contenido|truncatewords:20 }}
+                </p>
+
+                <p class="small text-secondary">
+                    Por {{ post.autor.username }}
+                    · {{ post.fecha_creacion|date:"d/m/Y" }}
+                </p>
+
+                <a
+                    href="{% url 'posts:detalle_post' post.pk %}"
+                    class="btn btn-gold mt-auto"
+                >
+                    Leer reseña
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+        <div class="col-12 text-center py-5">
+            <h3>Todavía no hay publicaciones.</h3>
+            <p class="text-secondary">
+                Pronto encontrarás reseñas de perfumes aquí.
+            </p>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

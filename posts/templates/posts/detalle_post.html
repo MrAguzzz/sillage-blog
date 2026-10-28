@@ -1,0 +1,67 @@
+{% extends "posts/base.html" %}
+
+{% block title %}{{ post.titulo }} | Sillage{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-9">
+
+        <a
+            href="{% url 'posts:lista_posts' %}"
+            class="text-decoration-none gold-text"
+        >
+            ← Volver a publicaciones
+        </a>
+
+        <article class="mt-4">
+
+            <span class="gold-text">
+                {{ post.get_categoria_display }}
+            </span>
+
+            <h1 class="display-5 fw-bold mt-2">
+                {{ post.titulo }}
+            </h1>
+
+            <p class="text-secondary">
+                Publicado por {{ post.autor.username }}
+                · {{ post.fecha_creacion|date:"d/m/Y" }}
+            </p>
+
+            {% if post.imagen %}
+
+                <img
+                    src="{{ post.imagen.url }}"
+                    alt="{{ post.titulo }}"
+                    class="img-fluid rounded my-4 w-100"
+                    style="max-height: 500px; object-fit: contain;"
+                >
+
+            {% else %}
+
+                <div class="post-placeholder rounded my-4">
+                    Esta publicación no tiene imagen
+                </div>
+
+            {% endif %}
+
+            <div class="fs-5 lh-lg mt-4">
+                {{ post.contenido|linebreaks }}
+            </div>
+
+            <hr class="border-secondary my-5">
+
+            <p class="text-secondary small">
+                Última actualización:
+                {{ post.fecha_actualizacion|date:"d/m/Y H:i" }}
+            </p>
+
+        </article>
+
+    </div>
+
+</div>
+
+{% endblock %}
