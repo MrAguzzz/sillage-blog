@@ -50,6 +50,29 @@
             <div class="fs-5 lh-lg mt-4">
                 {{ post.contenido|linebreaks }}
             </div>
+            
+            {% if user.is_authenticated and post.autor == user %}
+
+                <div class="d-flex gap-3 mt-4">
+
+                    <a
+                        href="{% url 'posts:editar_post' post.pk %}"
+                        class="btn btn-gold"
+                    >
+                        Editar publicación
+                    </a>
+
+                    <a
+                        href="{% url 'posts:eliminar_post' post.pk %}"
+                        class="btn btn-outline-danger"
+                    >
+                        Eliminar publicación
+                    </a>
+
+                </div>
+
+            {% endif %}
+
 
             <hr class="border-secondary my-5">
 

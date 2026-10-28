@@ -115,8 +115,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarMenu">
-
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item">
                         <a
                             class="nav-link"
@@ -125,8 +124,31 @@
                             Inicio
                         </a>
                     </li>
-                </ul>
 
+                    {% if user.is_authenticated %}
+
+                        <li class="nav-item ms-lg-3">
+                            <a
+                                class="btn btn-gold"
+                                href="{% url 'posts:crear_post' %}"
+                             >
+                                + Nueva publicación
+                            </a>
+                        </li>
+                    {% else %}
+
+                        <li class="nav-item">
+                             <a
+                                class="nav-link"
+                                href="{% url 'login' %}"
+                            >
+                                 Iniciar sesión
+                            </a>
+                        </li>
+
+                    {% endif %}
+    
+                </ul>
             </div>
         </div>
     </nav>

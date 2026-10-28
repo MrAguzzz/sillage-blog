@@ -1,0 +1,56 @@
+{% extends "posts/base.html" %}
+
+{% block title %}Eliminar publicación | Sillage{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-7">
+
+        <div class="post-card p-5 text-center">
+
+            <h1 class="text-danger mb-4">
+                Eliminar publicación
+            </h1>
+
+            <p class="fs-5">
+                ¿Estás seguro de que querés eliminar
+                <strong>{{ post.titulo }}</strong>?
+            </p>
+
+            <p class="text-secondary">
+                Esta acción no se puede deshacer.
+            </p>
+
+            <form method="POST" class="mt-4">
+
+                {% csrf_token %}
+
+                <div class="d-flex justify-content-center gap-3">
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger"
+                    >
+                        Sí, eliminar
+                    </button>
+
+                    <a
+                        href="{% url 'posts:detalle_post' post.pk %}"
+                        class="btn btn-outline-light"
+                    >
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
