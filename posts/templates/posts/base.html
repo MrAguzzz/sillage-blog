@@ -131,23 +131,59 @@
                             <a
                                 class="btn btn-gold"
                                 href="{% url 'posts:crear_post' %}"
-                             >
+                            >
                                 + Nueva publicación
                             </a>
                         </li>
+
+                        <li class="nav-item ms-lg-3">
+                            <span class="nav-link">
+                                Hola, {{ user.username }}
+                            </span>
+                        </li>
+
+                        <li class="nav-item ms-lg-3">
+
+                            <form
+                                method="POST"
+                                action="{% url 'usuarios:logout' %}"
+                                class="m-0"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-light"
+                                >
+                                    Cerrar sesión
+                                </button>
+
+                            </form>
+
+                        </li>
+
                     {% else %}
 
-                        <li class="nav-item">
-                             <a
+                        <li class="nav-item ms-lg-3">
+                            <a
                                 class="nav-link"
-                                href="{% url 'login' %}"
+                                href="{% url 'usuarios:login' %}"
                             >
-                                 Iniciar sesión
+                                Iniciar sesión
+                            </a>
+                        </li>
+
+                        <li class="nav-item ms-lg-3">
+                            <a
+                                class="btn btn-gold"
+                                href="{% url 'usuarios:registro' %}"
+                            >
+                                Registrarse
                             </a>
                         </li>
 
                     {% endif %}
-    
+
                 </ul>
             </div>
         </div>
