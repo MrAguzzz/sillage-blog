@@ -57,7 +57,7 @@ Tener instalados Python, pip y Git.
 ### 2. Clonar el repositorio
 
 ```bash
-git clone https://github.com/TU-USUARIO/sillage-blog.git
+git clone https://github.com/MrAguzzz/sillage-blog.git
 cd sillage-blog
 ```
 
