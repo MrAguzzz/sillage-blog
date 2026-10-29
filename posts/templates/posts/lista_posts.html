@@ -4,87 +4,236 @@
 
 {% block content %}
 
-<section class="text-center mb-5">
+<section class="hero-section text-center mb-5">
 
-    <h1 class="display-4 fw-bold gold-text">
-        Descubrí el mundo de las fragancias
+    <span class="gold-text text-uppercase">
+        Bienvenido a Sillage
+    </span>
+
+    <h1 class="display-4 fw-bold mt-3">
+        Cada fragancia tiene una historia
     </h1>
 
     <p class="lead text-secondary mt-3">
-        Reseñas, experiencias y opiniones sobre perfumes.
+        Descubrí reseñas, opiniones y experiencias
+        sobre el mundo de la perfumería.
     </p>
+
+    {% if user.is_authenticated %}
+
+        <a
+            href="{% url 'posts:crear_post' %}"
+            class="btn btn-gold btn-lg mt-3"
+        >
+            Compartir una reseña
+        </a>
+
+    {% else %}
+
+        <a
+            href="{% url 'usuarios:registro' %}"
+            class="btn btn-gold btn-lg mt-3"
+        >
+            Unite a la comunidad
+        </a>
+
+    {% endif %}
 
 </section>
 
-<h2 class="mb-4">Últimas publicaciones</h2>
+<section class="mb-5">
 
-<div class="row g-4">
+    <form method="GET" action="{% url 'posts:lista_posts' %}">
 
-    {% for post in posts %}
+        <div class="row g-3 align-items-end">
 
-    <div class="col-md-6 col-lg-4">
+            <div class="col-md-6">
 
-        <div class="post-card h-100 d-flex flex-column">
+                <label for="busqueda" class="form-label">
+                    Buscar perfumes
+                </label>
 
-            {% if post.imagen %}
-
-                <img
-                    src="{{ post.imagen.url }}"
-                    class="post-image"
-                    alt="{{ post.titulo }}"
+                <input
+                    type="search"
+                    name="q"
+                    id="busqueda"
+                    class="form-control"
+                    placeholder="Ej: Azzaro, vainilla, Lattafa..."
+                    value="{{ busqueda }}"
                 >
 
-            {% else %}
+            </div>
 
-                <div class="post-placeholder">
-                    Sin imagen disponible
-                </div>
+            <div class="col-md-3">
 
-            {% endif %}
+                <label for="categoria" class="form-label">
+                    Categoría
+                </label>
 
-            <div class="p-4 d-flex flex-column flex-grow-1">
-
-                <span class="gold-text mb-2">
-                    {{ post.get_categoria_display }}
-                </span>
-
-                <h3 class="h5 fw-bold">
-                    {{ post.titulo }}
-                </h3>
-
-                <p class="text-secondary">
-                    {{ post.contenido|truncatewords:20 }}
-                </p>
-
-                <p class="small text-secondary">
-                    Por {{ post.autor.username }}
-                    · {{ post.fecha_creacion|date:"d/m/Y" }}
-                </p>
-
-                <a
-                    href="{% url 'posts:detalle_post' post.pk %}"
-                    class="btn btn-gold mt-auto"
+                <select
+                    name="categoria"
+                    id="categoria"
+                    class="form-select"
                 >
-                    Leer reseña
-                </a>
+
+                    <option value="">
+                        Todas las categorías
+                    </option>
+
+                    {% for valor, nombre in categorias %}
+
+                        <option
+                            value="{{ valor }}"
+                            {% if categoria_actual == valor %}selected{% endif %}
+                        >
+                            {{ nombre }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <button
+                    type="submit"
+                    class="btn btn-gold w-100"
+                >
+                    Buscar reseñas
+                </button>
 
             </div>
 
         </div>
 
-    </div>
+    </form>
 
-    {% empty %}
+    {% if busqueda or categoria_actual %}
 
-        <div class="col-12 text-center py-5">
-            <h3>Todavía no hay publicaciones.</h3>
-            <p class="text-secondary">
-                Pronto encontrarás reseñas de perfumes aquí.
+        <div class="mt-3">
+
+            <p class="text-secondary mb-2">
+                Resultados de la búsqueda:
+                {{ posts|length }}
+                resultado{{ posts|length|pluralize }}
             </p>
+
+            <a
+                href="{% url 'posts:lista_posts' %}"
+                class="gold-text text-decoration-none"
+            >
+                Limpiar filtros
+            </a>
+
         </div>
 
-    {% endfor %}
+    {% endif %}
 
-</div>
+</section>
+
+<section>
+
+    <h2 class="mb-4 gold-text">
+        Últimas publicaciones
+    </h2>
+
+    <div class="row g-4">
+
+        {% for post in posts %}
+
+            <div class="col-md-6 col-lg-4">
+
+                <article class="post-card h-100 d-flex flex-column">
+
+                    {% if post.imagen %}
+
+                        <img
+                            src="{{ post.imagen.url }}"
+                            class="post-image"
+                            alt="Imagen de {{ post.titulo }}"
+                        >
+
+                    {% else %}
+
+                        <div class="post-placeholder">
+                            Sin imagen disponible
+                        </div>
+
+                    {% endif %}
+
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+
+                        <span class="gold-text small mb-2">
+                            {{ post.get_categoria_display }}
+                        </span>
+
+                        <h3 class="h5 fw-bold">
+                            {{ post.titulo }}
+                        </h3>
+
+                        <p class="text-secondary">
+                            {{ post.contenido|truncatewords:20 }}
+                        </p>
+
+                        <p class="small text-secondary">
+                            Por {{ post.autor.username }}
+                            · {{ post.fecha_creacion|date:"d/m/Y" }}
+                        </p>
+
+                        <a
+                            href="{% url 'posts:detalle_post' post.pk %}"
+                            class="btn btn-gold mt-auto"
+                        >
+                            Leer reseña
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        {% empty %}
+
+            <div class="col-12">
+
+                <div class="empty-state text-center py-5">
+
+                    {% if busqueda or categoria_actual %}
+
+                        <h3>No encontramos resultados</h3>
+
+                        <p class="text-secondary">
+                            Probá con otra palabra o categoría.
+                        </p>
+
+                        <a
+                            href="{% url 'posts:lista_posts' %}"
+                            class="btn btn-gold mt-3"
+                        >
+                            Ver todas las publicaciones
+                        </a>
+
+                    {% else %}
+
+                        <h3>Todavía no hay publicaciones</h3>
+
+                        <p class="text-secondary">
+                            Sé el primero en compartir una reseña.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
 
 {% endblock %}

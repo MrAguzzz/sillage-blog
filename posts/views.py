@@ -7,14 +7,39 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from .models import Post
 from .forms import PostForm
+from django.db.models import Q
+
 
 def lista_posts(request):
     posts = Post.objects.all()
 
+    busqueda = request.GET.get("q", "").strip()
+    categoria = request.GET.get("categoria", "").strip()
+
+    if busqueda:
+        posts = posts.filter(
+            Q(titulo__icontains=busqueda) |
+            Q(contenido__icontains=busqueda)
+        )
+
+    categorias_validas = [
+        valor for valor, nombre in Post.CATEGORIAS
+    ]
+
+    if categoria in categorias_validas:
+        posts = posts.filter(categoria=categoria)
+    else:
+        categoria = ""
+
     return render(
         request,
         "posts/lista_posts.html",
-        {"posts": posts}
+        {
+            "posts": posts,
+            "busqueda": busqueda,
+            "categoria_actual": categoria,
+            "categorias": Post.CATEGORIAS,
+        }
     )
 
 def detalle_post(request, pk):
