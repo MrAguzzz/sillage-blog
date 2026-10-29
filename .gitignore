@@ -1,25 +1,43 @@
-# Entorno virtual
+# Entornos virtuales
 venv/
 .venv/
+env/
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+
+# Variables privadas
+.env
+.env.*
+!.env.example
 
 # Base de datos local
 db.sqlite3
 db.sqlite3-journal
+db.sqlite3-shm
+db.sqlite3-wal
 
-# Archivos subidos
+# Archivos subidos por usuarios
 media/
 
-# Variables de entorno
-.env
+# Archivos estáticos recopilados
+staticfiles/
 
-# Configuraciones del editor
+# Caché y pruebas
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editores
 .vscode/
 .idea/
 
-# Sistema operativo
+# Archivos del sistema
 .DS_Store
 Thumbs.db
+
+# Temporales
+*.log
+*.tmp
